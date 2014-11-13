@@ -209,10 +209,8 @@ Response:
 		return err
 	}
 
-	// TODO: why use &v vs just v???
-
 	//
-	if err := json.Unmarshal(b, &v); err != nil {
+	if err := json.Unmarshal(b, v); err != nil {
 		panic(err)
 	}
 
