@@ -7,7 +7,7 @@ import (
 //
 type (
 
-	// App represents a Pagoda Box application
+	// App represents a Nanobox application
 	App struct {
 		ActiveDeployID      string    `json:"active_deploy_id"`      // The ID of the current deploy.
 		ActiveTransactionID string    `json:"active_transaction_id"` // The ID of the current running transaction.

@@ -8,7 +8,7 @@ import (
 //
 type (
 
-	// AppDeploy represents a Pagoda Box app deploy
+	// AppDeploy represents a Nanobox app deploy
 	AppDeploy struct {
 		AppID        string    `json:"app_id"`        //
 		BuildState   string    `json:"build_state"`   //

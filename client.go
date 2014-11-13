@@ -1,5 +1,5 @@
 // package client consists of a core api client struct with methods broken into
-// related calls, for interacting and communicating with the Pagoda Box API.
+// related calls, for interacting and communicating with the Nanobox API.
 package client
 
 //
@@ -12,14 +12,12 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httputil"
-	"os"
 	"regexp"
 )
 
 //
 const (
-	DefaultAPIURL      = "https://api.pagodabox.io"
-	DefaultAPIVersion  = "v1"
+	DefaultAPIURL      = "http://localhost:8080"
 	DefaultContentType = "application/json"
 	Version            = "0.0.1"
 )
@@ -27,12 +25,10 @@ const (
 //
 type (
 
-	// Client represents a Pagoda Box API client. Its zero value is a default
+	// Client represents a Nanobox API client. Its zero value is a default
 	// http.Client. A Client should be created only once and reused:
 	Client struct {
 		APIURL     string       // The URL to which the API client will make requests.
-		APIVersion string       // The version of the API to make requests to.
-		AuthToken  string       // The authentication_token of the user to make requests with.
 		Debug      bool         // If debug mode is enabled.
 		HTTPClient *http.Client // The HTTP.Client to use when making requests.
 		Password   string       // The password to use when requesting an auth_token.
@@ -70,35 +66,30 @@ func NewClient() *Client {
 		c.APIURL = DefaultAPIURL
 	}
 
-	// if no API Version specified, use default.
-	if c.APIVersion == "" {
-		c.APIVersion = DefaultAPIVersion
-	}
-
 	return c
 }
 
-// post handles standard POST operations to the Pagoda Box API
+// post handles standard POST operations to the Nanobox API
 func (c *Client) post(v interface{}, path string, body interface{}) error {
 	return c.doAPIRequest(v, "POST", path, body)
 }
 
-// get handles standard GET operations to the Pagoda Box API
+// get handles standard GET operations to the Nanobox API
 func (c *Client) get(v interface{}, path string) error {
 	return c.doAPIRequest(v, "GET", path, nil)
 }
 
-// patch handles standard PATH operations to the Pagoda Box API [NOT SUPPORTED]
+// patch handles standard PATH operations to the Nanobox API [NOT SUPPORTED]
 func (c *Client) patch(v interface{}, path string, body interface{}) error {
 	return c.doAPIRequest(v, "PATCH", path, body)
 }
 
-// put handles standard PUT operations to the Pagoda Box API
+// put handles standard PUT operations to the Nanobox API
 func (c *Client) put(v interface{}, path string, body interface{}) error {
 	return c.doAPIRequest(v, "PUT", path, body)
 }
 
-// delete handles standard DELETE operations to the Pagoda Box API
+// delete handles standard DELETE operations to the Nanobox API
 func (c *Client) delete(path string) error {
 	return c.doAPIRequest(nil, "DELETE", path, nil)
 }
@@ -107,7 +98,8 @@ func (c *Client) delete(path string) error {
 // is a better way to split these up that is a little cleaner now that we have to
 // have raw requests
 
-// DoRawRequest : creates and perform a standard HTTP request.
+// DoRawRequest creates and perform a standard HTTP request, allowing for the
+// addition of custom headers
 func (c *Client) DoRawRequest(v interface{}, method, path string, body interface{}, headers map[string]string) error {
 
 	req, err := c.newRequest(method, path, body, headers)
@@ -118,11 +110,11 @@ func (c *Client) DoRawRequest(v interface{}, method, path string, body interface
 	return c.do(req, v)
 }
 
-// doAPIRequest : creates and perform a standard HTTP request.
+// doAPIRequest creates and perform a standard HTTP request.
 func (c *Client) doAPIRequest(v interface{}, method, path string, body interface{}) error {
 
 	// the fully qualified URL includes the apiURL + path + auth_token
-	fullPath := c.APIURL + "/" + c.APIVersion + path + "?auth_token=" + c.AuthToken
+	fullPath := c.APIURL + path
 
 	req, err := c.newRequest(method, fullPath, body, nil)
 	if err != nil {
@@ -132,7 +124,8 @@ func (c *Client) doAPIRequest(v interface{}, method, path string, body interface
 	return c.do(req, v)
 }
 
-// newRequest : creates an HTTP request for the Pagoda Box API, but does not perform it.
+// newRequest creates an HTTP request for the Pagoda Box API, but does not perform
+// it.
 func (c *Client) newRequest(method, path string, body interface{}, headers map[string]string) (*http.Request, error) {
 
 	var rbody io.Reader
@@ -167,7 +160,7 @@ func (c *Client) newRequest(method, path string, body interface{}, headers map[s
 	return req, nil
 }
 
-// Do : perform an http.NewRequest
+// Do performs an http.NewRequest
 func (c *Client) do(req *http.Request, v interface{}) error {
 
 	// debugging
@@ -179,40 +172,46 @@ func (c *Client) do(req *http.Request, v interface{}) error {
 
 		fmt.Println(`
 Request:
-----------------------------------------`)
-		os.Stderr.Write(dump)
-		os.Stderr.Write([]byte{'\n'})
+--------------------------------------------------------------------------------
+` + string(dump))
 	}
 
 	//
-	resp, err := c.HTTPClient.Do(req)
+	res, err := c.HTTPClient.Do(req)
 
 	if err != nil {
 		return err
 	}
 
-	defer resp.Body.Close()
+	defer res.Body.Close()
 
 	// debugging
 	if c.Debug {
-		dump, err := httputil.DumpResponse(resp, true)
+		dump, err := httputil.DumpResponse(res, true)
 		if err != nil {
 			panic(err)
 		}
 
 		fmt.Println(`
 Response:
-----------------------------------------`)
-		os.Stderr.Write(dump)
-		os.Stderr.Write([]byte{'\n', '\n'})
+--------------------------------------------------------------------------------
+` + string(dump))
+	}
+
+	//
+	b, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		panic(err)
 	}
 
 	// check the response
-	if err = checkResponse(resp); err != nil {
+	if err = checkResponse(res, b); err != nil {
 		return err
 	}
 
-	b, err := ioutil.ReadAll(resp.Body)
+	// TODO: why use &v vs just v???
+
+	//
 	if err := json.Unmarshal(b, &v); err != nil {
 		panic(err)
 	}
@@ -220,15 +219,10 @@ Response:
 	return err
 }
 
-// checkResponse : if the response is !20* return an error with the status and statuscode
-func checkResponse(resp *http.Response) error {
+// checkResponse determins if the response is !20* and return a custom api error
+func checkResponse(res *http.Response, b []byte) error {
 
-	if resp.StatusCode/100 != 2 {
-
-		b, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			panic(err)
-		}
+	if res.StatusCode/100 != 2 {
 
 		//
 		var subMatch []string
@@ -244,21 +238,21 @@ func checkResponse(resp *http.Response) error {
 
 		// separate the status code and text
 		reFindStatusText := regexp.MustCompile(`^\s*(\d+)(\D+)$`)
-		subMatch = reFindStatusText.FindStringSubmatch(resp.Status)
+		subMatch = reFindStatusText.FindStringSubmatch(res.Status)
 		if subMatch == nil {
-			return errors.New("Unable to parse error status: " + resp.Status)
+			return errors.New("Unable to parse error status: " + res.Status)
 		}
 
 		statusCode := subMatch[1]
 		statusText := subMatch[2]
 
-		return Error{error: errors.New(string(b)), Code: resp.StatusCode, Status: resp.Status, StatusCode: statusCode, StatusText: statusText, Body: body}
+		return Error{error: errors.New(string(b)), Code: res.StatusCode, Status: res.Status, StatusCode: statusCode, StatusText: statusText, Body: body}
 	}
 
 	return nil
 }
 
-// toJSON : converts an interface (v) into JSON bytecode
+// toJSON converts an interface (v) into JSON bytecode
 func toJSON(v interface{}) []byte {
 	b, err := json.Marshal(v)
 	if err != nil {

@@ -1,6 +1,6 @@
-## Pagoda Box V2 API Client
+## Nanobox V2 API Client
 
-This is the Pagoda Box V2 API client written in Go (golang)
+This is the Nanobox V2 API client written in Go (golang)
 
 ### Installation
 
@@ -16,10 +16,10 @@ This will give you access to the API client in the form of `api-client-go`.
 ##### aliased import:
 
     import (
-      pagodaAPI "github.com/pagodabox-tools/api-client-go"
+      nanoAPI "github.com/pagodabox-tools/api-client-go"
     )
 
-This will give you access to the API client in the nicer `pagodaAPI` form.
+This will give you access to the API client in the nicer `nanoAPI` form.
 
 
 ### Getting Started
@@ -27,9 +27,9 @@ This will give you access to the API client in the nicer `pagodaAPI` form.
 All of the following examples will assume an **aliased import** method:
 
     // create a new client
-    apiClient = pagodaAPI.NewClient()
+    apiClient = nanoAPI.NewClient()
 
-A user auth token, found on your [dashboard](https://dashboard.pagodabox.io/users/me/auth-token), is required to communicate with the Pagoda Box CLI:
+A user auth token, found on your [dashboard](https://dashboard.pagodabox.io/users/me/auth-token), is required to communicate with the Nanobox CLI:
 
     // set api auth token
     apiClient.AuthToken = "abc123"
@@ -64,7 +64,7 @@ To list all of an apps environment variables:
 
 The API will return both critical (internal) errors from Go, or special API errors. To handle these special errors:
 
-    if apiError, ok := err.(pagodaAPI.Error); ok {
+    if apiError, ok := err.(nanoAPI.Error); ok {
       // handle error
     }
 
@@ -80,7 +80,7 @@ These API errors have a variety of fields available to use when determining the 
 
 ### Optional Parameters
 
-The Pagoda Box API has many actions with optional parameters. For example,
+The Nanobox API has many actions with optional parameters. For example,
 when creating an app, you can either specify a name, or allow the API to select
 one for you.
 
@@ -93,7 +93,7 @@ Options are provided as a pointer to a struct with all available options as fiel
     name := "my-app"
 
     // create an options struct
-    options := &pagodaAPI.AppCreateOptions{}
+    options := &nanoAPI.AppCreateOptions{}
 
     // set option field as a pointer to name
     options.Name := &name

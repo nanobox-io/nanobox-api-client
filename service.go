@@ -7,7 +7,7 @@ import (
 //
 type (
 
-	// AppService represents a Pagoda Box app service
+	// AppService represents a Nanobox app service
 	AppService struct {
 		ActivePlanID string            `json:"active_plan_id"` //
 		AppID        string            `json:"app_id"`         //
