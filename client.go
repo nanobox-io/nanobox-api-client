@@ -204,6 +204,23 @@ Response:
 		panic(err)
 	}
 
+	// p := make([]byte, 2048)
+	// for {
+	// 	_, err := res.Body.Read(p)
+	// 	if err != nil {
+	// 		if err == io.EOF {
+	// 			fmt.Println("EOF!!")
+	// 			break
+	// 		}
+	// 	}
+	// 	fmt.Println(string(p))
+	// }
+
+	// rw.Write([]byte(out))
+	// rw.(http.Flusher).Flush()
+
+	defer res.Body.Close()
+
 	// check the response
 	if err = checkResponse(res, b); err != nil {
 		return err
