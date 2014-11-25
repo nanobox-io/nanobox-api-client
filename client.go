@@ -9,7 +9,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
+	// "io/ioutil"
 	"net/http"
 	"net/http/httputil"
 	"regexp"
@@ -17,7 +17,7 @@ import (
 
 //
 const (
-	DefaultAPIURL      = "http://localhost:8080"
+	DefaultAPIURL      = "http://localhost:1757"
 	DefaultContentType = "application/json"
 	Version            = "0.0.1"
 )
@@ -189,7 +189,8 @@ Request:
 	if c.Debug {
 		dump, err := httputil.DumpResponse(res, true)
 		if err != nil {
-			panic(err)
+			// panic(err)
+			fmt.Println("BONK!", err)
 		}
 
 		fmt.Println(`
@@ -199,27 +200,23 @@ Response:
 	}
 
 	//
-	b, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		panic(err)
+	b := make([]byte, bytes.MinRead)
+	for {
+		_, err := res.Body.Read(b)
+		if err != nil {
+			if err == io.EOF {
+				fmt.Println("EOF!")
+				// return ?
+				break
+			} else {
+				return err
+			}
+		}
 	}
 
-	// p := make([]byte, 2048)
-	// for {
-	// 	_, err := res.Body.Read(p)
-	// 	if err != nil {
-	// 		if err == io.EOF {
-	// 			fmt.Println("EOF!!")
-	// 			break
-	// 		}
-	// 	}
-	// 	fmt.Println(string(p))
-	// }
-
-	// rw.Write([]byte(out))
-	// rw.(http.Flusher).Flush()
-
 	defer res.Body.Close()
+
+	b = bytes.Trim(b, "\x00")
 
 	// check the response
 	if err = checkResponse(res, b); err != nil {
@@ -227,9 +224,9 @@ Response:
 	}
 
 	//
-	if err := json.Unmarshal(b, v); err != nil {
-		panic(err)
-	}
+	// if err := json.Unmarshal(b, v); err != nil {
+	// 	panic(err)
+	// }
 
 	return err
 }
