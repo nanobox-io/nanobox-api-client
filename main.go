@@ -189,8 +189,7 @@ Request:
 	if c.Debug {
 		dump, err := httputil.DumpResponse(res, true)
 		if err != nil {
-			// panic(err)
-			fmt.Println("BONK!", err)
+			panic(err)
 		}
 
 		fmt.Println(`
@@ -200,33 +199,38 @@ Response:
 	}
 
 	//
-	b := make([]byte, bytes.MinRead)
+	var b []byte
+
+	//
 	for {
+		b = make([]byte, bytes.MinRead)
+
 		_, err := res.Body.Read(b)
 		if err != nil {
 			if err == io.EOF {
 				fmt.Println("EOF!")
-				// return ?
 				break
 			} else {
 				return err
 			}
 		}
+
+		b = bytes.Trim(b, "\x00")
+
+		// check the response
+		if err = checkResponse(res, b); err != nil {
+			return err
+		}
+
+		//
+		if err := json.Unmarshal(b, v); err != nil {
+			// panic(err)
+			fmt.Printf("BONK: ", string(b))
+			// fmt.Println("BONK ON UNMARSHAL!", err)
+		}
 	}
 
 	defer res.Body.Close()
-
-	b = bytes.Trim(b, "\x00")
-
-	// check the response
-	if err = checkResponse(res, b); err != nil {
-		return err
-	}
-
-	//
-	// if err := json.Unmarshal(b, v); err != nil {
-	// 	panic(err)
-	// }
 
 	return err
 }
