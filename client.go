@@ -6,7 +6,7 @@
 //
 
 // package client consists of a core api client struct with methods broken into
-// related calls, for interacting and communicating with the Pagoda Box API.
+// related calls, for interacting and communicating with the nanobox API.
 package client
 
 //
@@ -23,7 +23,7 @@ import (
 
 //
 const (
-	DefaultAPIURL      = "https://api.pagodabox.io"
+	DefaultAPIURL      = "https://api.nanobox.io"
 	DefaultAPIVersion  = "v1"
 	DefaultContentType = "application/json"
 	Version            = "1.0.0"
@@ -65,27 +65,27 @@ func init() {
 	HTTPClient = http.DefaultClient
 }
 
-// post handles standard POST operations to the Pagoda Box API
+// post handles standard POST operations to the nanobox API
 func post(v interface{}, path string, body interface{}) error {
 	return doAPIRequest(v, "POST", path, body)
 }
 
-// get handles standard GET operations to the Pagoda Box API
+// get handles standard GET operations to the nanobox API
 func get(v interface{}, path string) error {
 	return doAPIRequest(v, "GET", path, nil)
 }
 
-// patch handles standard PATH operations to the Pagoda Box API
+// patch handles standard PATH operations to the nanobox API
 func patch(v interface{}, path string, body interface{}) error {
 	return doAPIRequest(v, "PATCH", path, body)
 }
 
-// put handles standard PUT operations to the Pagoda Box API
+// put handles standard PUT operations to the nanobox API
 func put(v interface{}, path string, body interface{}) error {
 	return doAPIRequest(v, "PUT", path, body)
 }
 
-// delete handles standard DELETE operations to the Pagoda Box API
+// delete handles standard DELETE operations to the nanobox API
 func delete(path string) error {
 	return doAPIRequest(nil, "DELETE", path, nil)
 }
@@ -96,29 +96,29 @@ func doAPIRequest(v interface{}, method, path string, body interface{}) error {
 	// the request URL includes the APIURL + APIVersion + path + user_slug + auth_token
 	reqPath := APIURL + "/" + APIVersion + path + "?user_slug=" + UserSlug + "&auth_token=" + AuthToken
 
-	req, err := newRequest(method, reqPath, body, nil)
+	req, err := NewRequest(method, reqPath, body, nil)
 	if err != nil {
 		return err
 	}
 
-	return do(req, v)
+	return Do(req, v)
 }
 
 // DoRawRequest creates and perform a standard HTTP request, allowing for the
 // addition of custom headers
 func DoRawRequest(v interface{}, method, path string, body interface{}, headers map[string]string) error {
 
-	req, err := newRequest(method, path, body, headers)
+	req, err := NewRequest(method, path, body, headers)
 	if err != nil {
 		return err
 	}
 
-	return do(req, v)
+	return Do(req, v)
 }
 
-// newRequest creates an HTTP request for the Pagoda Box API, but does not perform
+// NewRequest creates an HTTP request for the nanobox API, but does not perform
 // it.
-func newRequest(method, path string, body interface{}, headers map[string]string) (*http.Request, error) {
+func NewRequest(method, path string, body interface{}, headers map[string]string) (*http.Request, error) {
 
 	var rbody io.Reader
 
@@ -152,7 +152,7 @@ func newRequest(method, path string, body interface{}, headers map[string]string
 }
 
 // Do performs an http.NewRequest
-func do(req *http.Request, v interface{}) error {
+func Do(req *http.Request, v interface{}) error {
 
 	// debugging
 	if Debug {
