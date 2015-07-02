@@ -54,7 +54,7 @@ func CreateEngine(options *EngineCreateOptions) (*Engine, error) {
 }
 
 // GetEngine returns the specified engine
-func GetEngine(engineSlug string) (*Engine, error) {
+func GetEngine(userSlug, engineSlug string) (*Engine, error) {
 	var engine Engine
-	return &engine, get(&engine, "/engines/" + engineSlug)
+	return &engine, get(&engine, "/engines/" + userSlug + "/" + engineSlug)
 }

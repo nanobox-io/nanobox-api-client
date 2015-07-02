@@ -67,7 +67,7 @@ func CreateEngineRelease(engineSlug string, options *EngineReleaseCreateOptions)
 }
 
 // GetEngineRelease returns the specified release
-func GetEngineRelease(engineSlug, releaseSlug string) (*EngineRelease, error) {
-	var release EngineRelease
-	return &release, get(&release, "/engines/" + engineSlug + "/releases/" + releaseSlug)
-}
+// func GetEngineRelease(engineSlug, releaseSlug string) (*EngineRelease, error) {
+// 	var release EngineRelease
+// 	return &release, get(&release, "/engines/" + engineSlug + "/releases/" + releaseSlug)
+// }
