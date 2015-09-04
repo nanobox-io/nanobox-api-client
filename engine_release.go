@@ -17,38 +17,36 @@ type (
 
 	// EngineRelease represents a nanobox published project
 	EngineRelease struct {
-		Authors      []string   `json:"authors"`
-		Checksum     string     `json:"checksum"`
-		CreatedAt    time.Time  `json:"created_at"`
-		Description  string     `json:"description"`
-		ID 					 string 		`json:"id"`
-		License      string     `json:"license"`
-		Name         string     `json:"name"`
-		ProjectFiles []string   `json:"project_files"`
-		Readme       string     `json:"readme"`
-		Stability    string     `json:"stability"`
-		State        string     `json:"state"`
-		Summary      string     `json:"summary"`
-		Type         string     `json:"type"`
-		UpdatedAt    time.Time  `json:"updated_at"`
-		UUID         string     `json:"uuid"`
-		Version      string     `json:"version"`
+		Authors   []string  `json:"authors"`
+		Checksum  string    `json:"checksum"`
+		CreatedAt time.Time `json:"created_at"`
+		Generic   string    `json:"generic"`
+		ID        string    `json:"id"`
+		Language  string    `json:"language"`
+		License   string    `json:"license"`
+		Name      string    `json:"name"`
+		Readme    string    `json:"readme"`
+		Stability string    `json:"stability"`
+		State     string    `json:"state"`
+		Summary   string    `json:"summary"`
+		UpdatedAt time.Time `json:"updated_at"`
+		UUID      string    `json:"uuid"`
+		Version   string    `json:"version"`
 	}
 
 	// EngineReleaseCreateOptions represents all available options when creating a release.
 	EngineReleaseCreateOptions struct {
-		Authors      []string `json:"authors"`
-		Checksum     string   `json:"checksum"`
-		Description  string   `json:"description"`
-		License      string   `json:"license"`
-		Name         string   `json:"name"`
-		ProjectFiles []string `json:"project_files"`
-		Readme       string   `json:"readme"`
-		Stability    string   `json:"stability"`
-		State        string   `json:"state"`
-		Summary      string   `json:"summary"`
-		Type         string   `json:"type"`
-		Version      string   `json:"version"`
+		Authors   []string `json:"authors"`
+		Checksum  string   `json:"checksum"`
+		Generic   string   `json:"generic"`
+		Language  string   `json:"language"`
+		License   string   `json:"license"`
+		Name      string   `json:"name"`
+		Readme    string   `json:"readme"`
+		Stability string   `json:"stability"`
+		State     string   `json:"state"`
+		Summary   string   `json:"summary"`
+		Version   string   `json:"version"`
 	}
 )
 
@@ -63,7 +61,7 @@ func CreateEngineRelease(engineSlug string, options *EngineReleaseCreateOptions)
 	}
 
 	var release EngineRelease
-	return &release, post(&release, "/engines/" + engineSlug + "/releases/", string(b))
+	return &release, post(&release, "/engines/"+engineSlug+"/releases/", string(b))
 }
 
 // GetEngineRelease returns the specified release

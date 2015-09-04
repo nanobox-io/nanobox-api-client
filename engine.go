@@ -17,25 +17,20 @@ type (
 
 	// Engine represents a nanobox published project
 	Engine struct {
-		ActiveReleaseID   string     `json:"active_release_id"`
-		CreatedAt         time.Time  `json:"created_at"`
-		CreatorID         string     `json:"creator_id"`
-		Downloads         int        `json:"downloads"`
-		ID                string     `json:"id"`
-		Name              string     `json:"name"`
-		Official          bool       `json:"official"`
-		RepositoriumKey 	string     `json:"repositorium_key"`
-		RepositoriumUser  string     `json:"repositorium_user"`
-		State             string     `json:"state"`
-		UpdatedAt         time.Time  `json:"updated_at"`
-		WarehouseUser     string     `json:"warehouse_user"`
-		WarehouseKey      string     `json:"warehouse_key"`
+		ActiveReleaseID string    `json:"active_release_id"`
+		CreatedAt       time.Time `json:"created_at"`
+		CreatorID       string    `json:"creator_id"`
+		Downloads       int       `json:"downloads"`
+		ID              string    `json:"id"`
+		Name            string    `json:"name"`
+		Official        bool      `json:"official"`
+		State           string    `json:"state"`
+		UpdatedAt       time.Time `json:"updated_at"`
 	}
 
 	// EngineCreateOptions represents all available options when creating a engine.
 	EngineCreateOptions struct {
 		Name string `json:"name"`
-		Type string `json:"type"`
 	}
 )
 
@@ -56,5 +51,5 @@ func CreateEngine(options *EngineCreateOptions) (*Engine, error) {
 // GetEngine returns the specified engine
 func GetEngine(userSlug, engineSlug string) (*Engine, error) {
 	var engine Engine
-	return &engine, get(&engine, "/engines/" + userSlug + "/" + engineSlug)
+	return &engine, get(&engine, "/engines/"+userSlug+"/"+engineSlug)
 }
