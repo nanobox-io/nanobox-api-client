@@ -21,7 +21,9 @@ type (
 		CreatedAt       time.Time `json:"created_at"`
 		CreatorID       string    `json:"creator_id"`
 		Downloads       int       `json:"downloads"`
+		Generic         string    `json:"generic"`
 		ID              string    `json:"id"`
+		LanguageName    string    `json:"language_name"`
 		Name            string    `json:"name"`
 		Official        bool      `json:"official"`
 		State           string    `json:"state"`
@@ -30,7 +32,9 @@ type (
 
 	// EngineCreateOptions represents all available options when creating a engine.
 	EngineCreateOptions struct {
-		Name string `json:"name"`
+		Generic      string `json:"generic"`
+		LanguageName string `json:"language_name"`
+		Name         string `json:"name"`
 	}
 )
 

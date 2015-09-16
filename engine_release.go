@@ -22,7 +22,7 @@ type (
 		CreatedAt time.Time `json:"created_at"`
 		Generic   string    `json:"generic"`
 		ID        string    `json:"id"`
-		Language  string    `yaml:"language",json:"language_name"`
+		Language  string    `json:"language"`
 		License   string    `json:"license"`
 		Name      string    `json:"name"`
 		Readme    string    `json:"readme"`
@@ -39,7 +39,7 @@ type (
 		Authors   []string `json:"authors"`
 		Checksum  string   `json:"checksum"`
 		Generic   string   `json:"generic"`
-		Language  string   `yaml:"language",json:"language_name"`
+		Language  string   `json:"language"`
 		License   string   `json:"license"`
 		Name      string   `json:"name"`
 		Readme    string   `json:"readme"`
