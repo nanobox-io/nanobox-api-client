@@ -21,7 +21,7 @@ type (
 		CreatedAt       time.Time `json:"created_at"`
 		CreatorID       string    `json:"creator_id"`
 		Downloads       int       `json:"downloads"`
-		Generic         string    `json:"generic"`
+		Generic         bool      `json:"generic"`
 		ID              string    `json:"id"`
 		LanguageName    string    `json:"language_name"`
 		Name            string    `json:"name"`
@@ -48,6 +48,15 @@ func CreateEngine(engine *Engine) (*Engine, error) {
 
 // GetEngine returns the specified engine
 func GetEngine(userSlug, engineSlug string) (*Engine, error) {
+
+	var path string
+
+	//
+	path = "/engines/" + userSlug + "/" + engineSlug
+	if userSlug == "" {
+		path = "/engines/" + engineSlug
+	}
+
 	var engine Engine
-	return &engine, get(&engine, "/engines/"+userSlug+"/"+engineSlug)
+	return &engine, get(&engine, path)
 }

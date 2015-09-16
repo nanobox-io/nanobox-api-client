@@ -17,12 +17,16 @@ type (
 
 	// EngineRelease represents a nanobox published project
 	EngineRelease struct {
+
+		//
+		Generic  bool   `json:"generic"`
+		Language string `json:"language"`
+
+		//
 		Authors   []string  `json:"authors"`
 		Checksum  string    `json:"checksum"`
 		CreatedAt time.Time `json:"created_at"`
-		Generic   string    `json:"generic"`
 		ID        string    `json:"id"`
-		Language  string    `json:"language"`
 		License   string    `json:"license"`
 		Name      string    `json:"name"`
 		Readme    string    `json:"readme"`
@@ -49,9 +53,3 @@ func CreateEngineRelease(engineSlug string, release *EngineRelease) (*EngineRele
 	//
 	return release, post(release, "/engines/"+engineSlug+"/releases/", string(b))
 }
-
-// GetEngineRelease returns the specified release
-// func GetEngineRelease(engineSlug, releaseSlug string) (*EngineRelease, error) {
-// 	var release EngineRelease
-// 	return &release, get(&release, "/engines/" + engineSlug + "/releases/" + releaseSlug)
-// }
