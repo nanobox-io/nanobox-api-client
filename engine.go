@@ -29,27 +29,21 @@ type (
 		State           string    `json:"state"`
 		UpdatedAt       time.Time `json:"updated_at"`
 	}
-
-	// EngineCreateOptions represents all available options when creating a engine.
-	EngineCreateOptions struct {
-		Generic      string `json:"generic"`
-		LanguageName string `json:"language_name"`
-		Name         string `json:"name"`
-	}
 )
 
 // routes
 
-// CreateEngine creates a new engine, with provided options
-func CreateEngine(options *EngineCreateOptions) (*Engine, error) {
+// CreateEngine creates a new engine
+func CreateEngine(engine *Engine) (*Engine, error) {
 
-	b, err := json.Marshal(options)
+	//
+	b, err := json.Marshal(engine)
 	if err != nil {
 		return nil, err
 	}
 
-	var engine Engine
-	return &engine, post(&engine, "/engines", string(b))
+	//
+	return engine, post(engine, "/engines", string(b))
 }
 
 // GetEngine returns the specified engine
