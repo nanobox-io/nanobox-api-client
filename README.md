@@ -4,11 +4,11 @@ This is the Nanobox V2 API client written in Go (golang)
 
 ### Installation
 
-Run `go get github.com/pagodabox-tools/api-client-go` to download the package, then add the client to your Go file's imports list:
+Run `go get github.com/nanobox-io/api-client-go` to download the package, then add the client to your Go file's imports list:
 
 ##### standard import:
     import (
-      "github.com/pagodabox-tools/api-client-go"
+      "github.com/nanobox-io/api-client-go"
     )
 
 This will give you access to the API client in the form of `api-client-go`.
@@ -16,7 +16,7 @@ This will give you access to the API client in the form of `api-client-go`.
 ##### aliased import:
 
     import (
-      nanoAPI "github.com/pagodabox-tools/api-client-go"
+      nanoAPI "github.com/nanobox-io/api-client-go"
     )
 
 This will give you access to the API client in the nicer `nanoAPI` form.
@@ -120,7 +120,7 @@ If you do not wish to set any options, simply pass `nil` into the method.
 
 ### Documentation
 
-Complete documentation is available on [godoc](http://godoc.org/github.com/pagodabox-tools/api-client-go).
+Complete documentation is available on [godoc](http://godoc.org/github.com/nanobox-io/api-client-go).
 
 
 ### Contact
