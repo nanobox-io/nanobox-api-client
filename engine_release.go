@@ -20,9 +20,7 @@ type (
 		Authors   []string  `json:"authors"`
 		Checksum  string    `json:"checksum"`
 		CreatedAt time.Time `json:"created_at"`
-		Generic   bool      `json:"generic"`
 		ID        string    `json:"id"`
-		Language  string    `json:"language"`
 		License   string    `json:"license"`
 		Name      string    `json:"name"`
 		Readme    string    `json:"readme"`
