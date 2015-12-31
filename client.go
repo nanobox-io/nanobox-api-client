@@ -172,6 +172,7 @@ Request:
 	if err != nil {
 		return err
 	}
+	defer res.Body.Close()
 
 	// debugging
 	if Debug {
@@ -191,8 +192,6 @@ Response:
 	if err != nil {
 		return err
 	}
-
-	defer res.Body.Close()
 
 	// check the response
 	if err = checkResponse(res, b); err != nil {
