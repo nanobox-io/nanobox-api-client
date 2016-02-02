@@ -1,10 +1,3 @@
-// Copyright (c) 2015 Pagoda Box Inc
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License, v.
-// 2.0. If a copy of the MPL was not distributed with this file, You can obtain one
-// at http://mozilla.org/MPL/2.0/.
-//
-
 package client
 
 import (
@@ -15,35 +8,38 @@ import (
 //
 type (
 
-	// Engine represents a nanobox published project
+	// Engine represents a published nanobox engine
 	Engine struct {
+		EngineConfig
 		ActiveReleaseID string    `json:"active_release_id"`
 		CreatedAt       time.Time `json:"created_at"`
-		CreatorID       string    `json:"creator_id"`
-		Downloads       int       `json:"downloads"`
-		Generic         bool      `json:"generic"`
+		HasIcon         bool      `json:"has_icon"`
 		ID              string    `json:"id"`
-		LanguageName    string    `json:"language_name"`
-		Name            string    `json:"name"`
 		Official        bool      `json:"official"`
+		Private         bool      `json:"private"`
+		StarCount       string    `json:"star_count"`
 		State           string    `json:"state"`
 		UpdatedAt       time.Time `json:"updated_at"`
 	}
+
+	// EngineConfig represents all available options when creating an engine
+	EngineConfig struct {
+		Name *string `json:"app_id,omitempty"`
+	}
 )
 
-// routes
-
 // CreateEngine creates a new engine
-func CreateEngine(engine *Engine) (*Engine, error) {
+func CreateEngine(config *EngineConfig) (*Engine, error) {
 
 	//
-	b, err := json.Marshal(engine)
+	b, err := json.Marshal(config)
 	if err != nil {
 		return nil, err
 	}
 
 	//
-	return engine, post(engine, "/engines", string(b))
+	var engine Engine
+	return &engine, post(&engine, "/engines", string(b))
 }
 
 // GetEngine returns the specified engine
@@ -51,10 +47,11 @@ func GetEngine(userSlug, engineSlug string) (*Engine, error) {
 
 	var path string
 
-	//
-	path = "/engines/" + userSlug + "/" + engineSlug
-	if userSlug == "" {
+	switch {
+	case userSlug == "":
 		path = "/engines/" + engineSlug
+	default:
+		path = "/engines/" + userSlug + "/" + engineSlug
 	}
 
 	var engine Engine

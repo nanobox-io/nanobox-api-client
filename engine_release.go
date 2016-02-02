@@ -1,10 +1,3 @@
-// Copyright (c) 2015 Pagoda Box Inc
-//
-// This Source Code Form is subject to the terms of the Mozilla Public License, v.
-// 2.0. If a copy of the MPL was not distributed with this file, You can obtain one
-// at http://mozilla.org/MPL/2.0/.
-//
-
 package client
 
 import (
@@ -15,35 +8,40 @@ import (
 //
 type (
 
-	// EngineRelease represents a nanobox published project
+	// EngineRelease represents a published nanobox engine release
 	EngineRelease struct {
-		Authors   []string  `json:"authors"`
+		EngineReleaseConfig
 		Checksum  string    `json:"checksum"`
 		CreatedAt time.Time `json:"created_at"`
 		ID        string    `json:"id"`
-		License   string    `json:"license"`
-		Name      string    `json:"name"`
-		Readme    string    `json:"readme"`
-		Stability string    `json:"stability"`
 		State     string    `json:"state"`
-		Summary   string    `json:"summary"`
 		UpdatedAt time.Time `json:"updated_at"`
 		UUID      string    `json:"uuid"`
-		Version   string    `json:"version"`
+	}
+
+	// EngineReleaseConfig represents all available options when creating an engine
+	// release
+	EngineReleaseConfig struct {
+		Authors   *[]string `json:"authors,omitempty"`
+		License   *string   `json:"license,omitempty"`
+		Name      *string   `json:"name,omitempty"`
+		Readme    *string   `json:"readme,omitempty"`
+		Stability *string   `json:"stability,omitempty"`
+		Summary   *string   `json:"summary,omitempty"`
+		Version   *string   `json:"version,omitempty"`
 	}
 )
 
-// routes
-
-// CreateEngineRelease creates a new release
-func CreateEngineRelease(engineSlug string, release *EngineRelease) (*EngineRelease, error) {
+// CreateEngineRelease creates a new engine
+func CreateEngineRelease(engineSlug string, config *EngineReleaseConfig) (*EngineRelease, error) {
 
 	//
-	b, err := json.Marshal(release)
+	b, err := json.Marshal(config)
 	if err != nil {
 		return nil, err
 	}
 
 	//
-	return release, post(release, "/engines/"+engineSlug+"/releases/", string(b))
+	var release EngineRelease
+	return &release, post(&release, "/engines/"+engineSlug+"/releases", string(b))
 }
