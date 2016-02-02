@@ -57,15 +57,15 @@ func CreateService(config *ServiceConfig) (*Service, error) {
 }
 
 // GetService returns the specified service
-func GetService(userSlug, engineSlug, serviceSlug string) (*Service, error) {
+func GetService(userSlug, serviceSlug string) (*Service, error) {
 
 	var path string
 
 	switch {
 	case userSlug == "":
-		path = "/engines/" + engineSlug + "/services/" + serviceSlug
+		path = "/services/" + serviceSlug
 	default:
-		path = "/engines/" + userSlug + "/" + engineSlug + "/services/" + serviceSlug
+		path = "/services/" + userSlug + "/" + serviceSlug
 	}
 
 	var service Service
