@@ -11,7 +11,6 @@ type (
 	// EngineRelease represents a published nanobox engine release
 	EngineRelease struct {
 		EngineReleaseConfig
-		Checksum  string    `json:"checksum"`
 		CreatedAt time.Time `json:"created_at"`
 		ID        string    `json:"id"`
 		State     string    `json:"state"`
@@ -23,6 +22,7 @@ type (
 	// release
 	EngineReleaseConfig struct {
 		Authors   []string `json:"authors,omitempty"`
+		Checksum  string   `json:"checksum"`
 		License   string   `json:"license,omitempty"`
 		Name      string   `json:"name,omitempty"`
 		Readme    string   `json:"readme,omitempty"`
