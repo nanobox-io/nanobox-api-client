@@ -24,7 +24,7 @@ type (
 
 	// EngineConfig represents all available options when creating an engine
 	EngineConfig struct {
-		Name *string `json:"app_id,omitempty"`
+		Name string `json:"app_id,omitempty"`
 	}
 )
 

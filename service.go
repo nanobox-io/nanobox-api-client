@@ -23,18 +23,18 @@ type (
 
 	// ServiceConfig represents all available options when creating an service
 	ServiceConfig struct {
-		Authors     *[]string `json:"authors,omitempty"`
-		Behaviors   *[]string `json:"behaviors,omitempty"`
-		Category    *string   `json:"category,omitempty"`
-		Image       *string   `json:"image,omitempty"`
-		License     *string   `json:"license,omitempty"`
-		Links       *string   `json:"links,omitempty"`
-		Name        *string   `json:"name,omitempty"`
-		Readme      *string   `json:"readme,omitempty"`
-		Stabilities *[]string `json:"stabilities,omitempty"`
-		Summary     *string   `json:"summary,omitempty"`
-		Topologies  *[]string `json:"topologies,omitempty"`
-		Versions    *[]string `json:"versions,omitempty"`
+		Authors     []string `json:"authors,omitempty"`
+		Behaviors   []string `json:"behaviors,omitempty"`
+		Category    string   `json:"category,omitempty"`
+		Image       string   `json:"image,omitempty"`
+		License     string   `json:"license,omitempty"`
+		Links       string   `json:"links,omitempty"`
+		Name        string   `json:"name,omitempty"`
+		Readme      string   `json:"readme,omitempty"`
+		Stabilities []string `json:"stabilities,omitempty"`
+		Summary     string   `json:"summary,omitempty"`
+		Topologies  []string `json:"topologies,omitempty"`
+		Versions    []string `json:"versions,omitempty"`
 	}
 )
 

@@ -22,13 +22,13 @@ type (
 	// EngineReleaseConfig represents all available options when creating an engine
 	// release
 	EngineReleaseConfig struct {
-		Authors   *[]string `json:"authors,omitempty"`
-		License   *string   `json:"license,omitempty"`
-		Name      *string   `json:"name,omitempty"`
-		Readme    *string   `json:"readme,omitempty"`
-		Stability *string   `json:"stability,omitempty"`
-		Summary   *string   `json:"summary,omitempty"`
-		Version   *string   `json:"version,omitempty"`
+		Authors   []string `json:"authors,omitempty"`
+		License   string   `json:"license,omitempty"`
+		Name      string   `json:"name,omitempty"`
+		Readme    string   `json:"readme,omitempty"`
+		Stability string   `json:"stability,omitempty"`
+		Summary   string   `json:"summary,omitempty"`
+		Version   string   `json:"version,omitempty"`
 	}
 )
 
