@@ -26,6 +26,7 @@ type (
 		Authors     []string `json:"authors,omitempty"`
 		Behaviors   []string `json:"behaviors,omitempty"`
 		Category    string   `json:"category,omitempty"`
+		Checksum    string   `json:"checksum"`
 		Image       string   `json:"image,omitempty"`
 		License     string   `json:"license,omitempty"`
 		Links       string   `json:"links,omitempty"`
@@ -34,6 +35,7 @@ type (
 		Stabilities []string `json:"stabilities,omitempty"`
 		Summary     string   `json:"summary,omitempty"`
 		Topologies  []string `json:"topologies,omitempty"`
+		Version     string   `json:"version,omitempty"`
 		Versions    []string `json:"versions,omitempty"`
 	}
 )
